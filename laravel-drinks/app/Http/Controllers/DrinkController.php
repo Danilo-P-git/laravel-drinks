@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Drink;
+use Illuminate\Support\Facades\Validator;
 
 class DrinkController extends Controller
 {
@@ -58,7 +59,9 @@ class DrinkController extends Controller
      */
     public function edit($id)
     {
-        //
+      $drink = Drink::find($id);
+
+      return view('edit', compact('drink'));
     }
 
     /**
@@ -70,7 +73,35 @@ class DrinkController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $data = $request->all();
+
+    //   $validatedData = Validator::make($request->all(), [
+    //     'name' => 'required|unique:drinks|max:20',
+    //     'gradation' => 'required|numeric',
+    //     'tipology' => 'required|string|max:20',
+    //     'glass' => 'required|string|max:20',
+    //     'ingredients' => 'required|string',
+    //     'price' => 'required|numeric',
+    //     'origin' => 'required|string|max:20',
+    //     'year' => 'required|numeric|max:4',
+    //     'difficulty' => 'required|numeric|max:2',
+    //
+    // ]);
+
+
+    // if ($validatedData->fails()) {
+    //        return redirect()
+    //                     ->route('drink.edit', $id)
+    //                    ->withErrors($validatedData)
+    //                    ->withInput();
+    //    }
+
+    $drink = Drink::findOrFail($id);
+
+    $drink->fill($data);
+
+    $drink->save();
+    dd($drink);
     }
 
     /**
